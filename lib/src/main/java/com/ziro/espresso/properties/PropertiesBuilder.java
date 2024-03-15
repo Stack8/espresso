@@ -73,8 +73,7 @@ public class PropertiesBuilder {
             throw SystemUnhandledException.fluent()
                     .message(
                             "Something went wrong while trying to load resource with [fileName=%s] to a URL",
-                            propertiesFileName
-                    )
+                            propertiesFileName)
                     .cause(e)
                     .exception();
         }
