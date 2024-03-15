@@ -18,8 +18,7 @@ import okhttp3.Request;
 
 public class OkHttpClientFactory {
 
-    private OkHttpClientFactory() {
-    }
+    private OkHttpClientFactory() {}
 
     public static Interceptor buildBasicAuthInterceptor(String username, String password) {
         return chain -> {
@@ -31,8 +30,7 @@ public class OkHttpClientFactory {
     }
 
     public static Interceptor buildOAuth2Interceptor(
-            OAuth2ClientAccessTokenRequestParameters oauth2ClientAccessTokenRequestParams
-    ) {
+            OAuth2ClientAccessTokenRequestParameters oauth2ClientAccessTokenRequestParams) {
         return chain -> {
             String accessToken = OAuth2ClientAccessTokens.getAccessToken(oauth2ClientAccessTokenRequestParams);
             Request request = newRequestBuilder(chain.request())
@@ -48,7 +46,10 @@ public class OkHttpClientFactory {
         List<String> newPathSegments = new ArrayList<>(request.url().encodedPathSegments());
         newPathSegments.add(0, "services");
         return request.newBuilder()
-                .url(request.url().newBuilder().encodedPath("/" + Joiner.on("/").join(newPathSegments)).build())
+                .url(request.url()
+                        .newBuilder()
+                        .encodedPath("/" + Joiner.on("/").join(newPathSegments))
+                        .build())
                 // In order to be able to download files, we need to accept octet-stream.
                 // As for uploading, that is handled in the individual request itself.
                 .addHeader("Accept", "application/json, application/octet-stream")

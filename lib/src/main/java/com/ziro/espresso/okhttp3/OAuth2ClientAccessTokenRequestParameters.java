@@ -5,11 +5,7 @@ import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
 
 @NonNullByDefault
 public record OAuth2ClientAccessTokenRequestParameters(
-        String tokenUrl,
-        String clientId,
-        String clientSecret,
-        String scope
-) {
+        String tokenUrl, String clientId, String clientSecret, String scope) {
 
     @Override
     public String toString() {

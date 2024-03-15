@@ -20,34 +20,29 @@ import okhttp3.ResponseBody;
 
 class OAuth2ClientAccessTokens {
 
-    private static final Cache<String, String> ACCESS_TOKENS_CACHE = CacheBuilder.newBuilder()
-            .expireAfterWrite(Duration.ofMinutes(60))
-            .build();
+    private static final Cache<String, String> ACCESS_TOKENS_CACHE =
+            CacheBuilder.newBuilder().expireAfterWrite(Duration.ofMinutes(60)).build();
     private static final int SUCCESS_STATUS_CODE = 200;
 
-    private OAuth2ClientAccessTokens() {
-    }
+    private OAuth2ClientAccessTokens() {}
 
     static String getAccessToken(OAuth2ClientAccessTokenRequestParameters oauth2ClientAccessTokenRequestParams) {
         try {
             return ACCESS_TOKENS_CACHE.get(
                     oauth2ClientAccessTokenRequestParams.toString(),
-                    () -> accessTokensCacheLoader(oauth2ClientAccessTokenRequestParams)
-            );
+                    () -> accessTokensCacheLoader(oauth2ClientAccessTokenRequestParams));
         } catch (ExecutionException e) {
             throw SystemUnhandledException.fluent()
                     .message(
                             "Something went wrong while trying to get access token for [%s].",
-                            oauth2ClientAccessTokenRequestParams
-                    )
+                            oauth2ClientAccessTokenRequestParams)
                     .cause(e.getCause())
                     .exception();
         }
     }
 
     private static String accessTokensCacheLoader(
-            OAuth2ClientAccessTokenRequestParameters oauth2ClientAccessTokenRequestParams
-    ) throws IOException {
+            OAuth2ClientAccessTokenRequestParameters oauth2ClientAccessTokenRequestParams) throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         RequestBody requestBody = new FormBody.Builder()
@@ -73,9 +68,7 @@ class OAuth2ClientAccessTokens {
                     .message(
                             "Failed to obtain access token from Authorization Server. "
                                     + "The Authorization Server returned [status_code=%s, response=%s].",
-                            response.code(),
-                            responseAsString
-                    )
+                            response.code(), responseAsString)
                     .throwIf(response.code() != SUCCESS_STATUS_CODE);
 
             JsonElement jwtJsonElement = JsonParser.parseString(responseAsString);

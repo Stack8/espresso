@@ -11,14 +11,14 @@ import javax.annotation.Nullable;
 public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
 
     private static final String DEFAULT_EXCEPTION_MESSAGE = "Something went wrong.";
+
     @Nullable
     private String message;
 
     @Nullable
     private Throwable cause;
 
-    protected AbstractFluentExceptionSupport() {
-    }
+    protected AbstractFluentExceptionSupport() {}
 
     public AbstractFluentExceptionSupport<T> message(String message, Object... messageArgs) {
         if (messageArgs.length > 0) {
@@ -56,8 +56,7 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
 
     public T exception() {
         String currentMessage = message().orElse(DEFAULT_EXCEPTION_MESSAGE);
-        return cause()
-                .map(theCause -> createExceptionWith(currentMessage, theCause))
+        return cause().map(theCause -> createExceptionWith(currentMessage, theCause))
                 .orElse(createExceptionWith(currentMessage));
     }
 
