@@ -30,7 +30,9 @@ class PropertiesBuilderTest {
                 .loadOptional("some-random-non-existent.properties")
                 .build();
 
-        assertThat(properties).isNotNull().isNotEmpty()
+        assertThat(properties)
+                .isNotNull()
+                .isNotEmpty()
                 .containsEntry("test.prop.username", "test-admin")
                 .containsEntry("test.prop.password", "test-admin-password");
     }
