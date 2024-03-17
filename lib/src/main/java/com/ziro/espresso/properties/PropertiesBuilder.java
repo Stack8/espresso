@@ -3,7 +3,9 @@ package com.ziro.espresso.properties;
 import com.google.common.io.Resources;
 import com.ziro.espresso.fluent.exceptions.SystemUnhandledException;
 import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
+import java.io.File;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
@@ -28,20 +30,11 @@ public class PropertiesBuilder {
 
     public PropertiesBuilder load(String propertiesFileName) {
         URL resourceUrl = Resources.getResource(propertiesFileName);
-        load(resourceUrl);
-        return this;
+        return load(resourceUrl);
     }
 
-    public PropertiesBuilder load(URL url) {
-        try (InputStream in = url.openStream()) {
-            properties.load(in);
-        } catch (Exception e) {
-            throw SystemUnhandledException.fluent()
-                    .message("Something went wrong while trying to load properties from [url=%s]", url)
-                    .cause(e)
-                    .exception();
-        }
-        return this;
+    public PropertiesBuilder load(File propertiesFile) {
+        return load(toUrl(propertiesFile));
     }
 
     /**
@@ -55,10 +48,29 @@ public class PropertiesBuilder {
         return this;
     }
 
+    public PropertiesBuilder loadOptional(File optionalPropertiesFile) {
+        if (optionalPropertiesFile.exists()) {
+            return load(toUrl(optionalPropertiesFile));
+        }
+        return this;
+    }
+
     public Properties build() {
         Properties newProps = new Properties();
         newProps.putAll(properties);
         return newProps;
+    }
+
+    private PropertiesBuilder load(URL url) {
+        try (InputStream in = url.openStream()) {
+            properties.load(in);
+        } catch (Exception e) {
+            throw SystemUnhandledException.fluent()
+                    .message("Something went wrong while trying to load properties from [url=%s]", url)
+                    .cause(e)
+                    .exception();
+        }
+        return this;
     }
 
     private static Optional<URL> getOptionalResourceByFileName(String fileName) {
@@ -66,6 +78,16 @@ public class PropertiesBuilder {
             return Optional.of(Resources.getResource(fileName));
         } catch (IllegalArgumentException e) {
             return Optional.empty();
+        }
+    }
+
+    private static URL toUrl(File file) {
+        try {
+            return file.toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw SystemUnhandledException.fluent()
+                    .message("Something went wrong while trying to convert file [name=%s] to URL.", file.getName())
+                    .exception();
         }
     }
 }
