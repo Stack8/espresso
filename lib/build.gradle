@@ -3,6 +3,11 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
+// Don't cache snapshots
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 spotless {
     java {
         palantirJavaFormat()
