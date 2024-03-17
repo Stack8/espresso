@@ -6,6 +6,7 @@ import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -16,16 +17,18 @@ public class PropertiesBuilder {
 
     private final Properties properties;
 
-    private PropertiesBuilder() {
+    public PropertiesBuilder() {
         properties = new Properties();
-    }
-
-    public static PropertiesBuilder newBuilder() {
-        return new PropertiesBuilder();
     }
 
     public PropertiesBuilder load(Map<Object, Object> props) {
         properties.putAll(props);
+        return this;
+    }
+
+    public PropertiesBuilder load(String propertiesFileName) {
+        URL resourceUrl = Resources.getResource(propertiesFileName);
+        load(resourceUrl);
         return this;
     }
 
@@ -41,21 +44,14 @@ public class PropertiesBuilder {
         return this;
     }
 
-    public PropertiesBuilder load(String propertiesFileName) {
-        load(toUrl(propertiesFileName));
-        return this;
-    }
-
+    /**
+     * Loads specified optionalPropertiesFileName. If the provided optionalPropertiesFileName is not found, then
+     * nothing is loaded and no exception is thrown.
+     * @param optionalPropertiesFileName the optional properties file name to load
+     * @return {@link PropertiesBuilder}
+     */
     public PropertiesBuilder loadOptional(String optionalPropertiesFileName) {
-        URL url;
-        try {
-            url = toUrl(optionalPropertiesFileName);
-        } catch (Exception e) {
-            // The file is optional, so if we fail to load it, just ignore the failure and continue.
-            return this;
-        }
-
-        load(url);
+        getOptionalResourceByFileName(optionalPropertiesFileName).ifPresent(this::load);
         return this;
     }
 
@@ -65,17 +61,11 @@ public class PropertiesBuilder {
         return newProps;
     }
 
-    private static URL toUrl(String propertiesFileName) {
+    private static Optional<URL> getOptionalResourceByFileName(String fileName) {
         try {
-            //noinspection UnstableApiUsage
-            return Resources.getResource(propertiesFileName);
-        } catch (Exception e) {
-            throw SystemUnhandledException.fluent()
-                    .message(
-                            "Something went wrong while trying to load resource with [fileName=%s] to a URL",
-                            propertiesFileName)
-                    .cause(e)
-                    .exception();
+            return Optional.of(Resources.getResource(fileName));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
         }
     }
 }
