@@ -62,11 +62,3 @@ def resolveProjectVersion() {
     def gitDescribe = 'git describe --exact-match HEAD'.execute().text.trim()
     gitDescribe ? version : version + '-SNAPSHOT'
 }
-
-publishing {
-    publications {
-        myLibrary(MavenPublication) {
-            from components.java
-        }
-    }
-}
