@@ -10,7 +10,7 @@ public final class MoreCollectors {
     private MoreCollectors() {}
 
     /**
-     * Collects to exactly one element, throwing an IllegalStateException if there are either 0 or more than 1 elements.
+     * Collects to exactly one element, throwing an IllegalStateException if there are either 0 or more than 1 element.
      */
     public static <T> Collector<T, Object, T> exactlyOne(String description, Object... descriptionParams) {
         return Collectors.collectingAndThen(Collectors.toList(), list -> {
