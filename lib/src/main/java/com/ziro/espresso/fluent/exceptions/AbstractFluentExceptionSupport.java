@@ -1,13 +1,11 @@
 package com.ziro.espresso.fluent.exceptions;
 
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
  * Provides fluent support to any type of throwable.
  */
-@NonNullByDefault
 public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
 
     private static final String DEFAULT_EXCEPTION_MESSAGE = "Something went wrong.";

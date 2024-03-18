@@ -2,7 +2,6 @@ package com.ziro.espresso.properties;
 
 import com.google.common.io.Resources;
 import com.ziro.espresso.fluent.exceptions.SystemUnhandledException;
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
 import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -14,7 +13,6 @@ import java.util.Properties;
 /**
  * Loads properties quietly throwing runtime exceptions on failure.
  */
-@NonNullByDefault
 public class PropertiesBuilder {
 
     private final Properties properties;

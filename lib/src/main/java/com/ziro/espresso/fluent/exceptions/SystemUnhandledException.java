@@ -1,9 +1,7 @@
 package com.ziro.espresso.fluent.exceptions;
 
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
 import javax.annotation.Nonnull;
 
-@NonNullByDefault
 public class SystemUnhandledException extends RuntimeException {
 
     public static final String DEFAULT_MESSAGE = "ZIRO encountered an error it could not recover from.";
