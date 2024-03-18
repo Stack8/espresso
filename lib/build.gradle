@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'com.diffplug.spotless' version '6.25.0'
+    id 'maven-publish'
 }
 
 allprojects {
@@ -62,3 +63,10 @@ def resolveProjectVersion() {
     gitDescribe ? version : version + '-SNAPSHOT'
 }
 
+publishing {
+    publications {
+        myLibrary(MavenPublication) {
+            from components.java
+        }
+    }
+}
