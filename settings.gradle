@@ -6,4 +6,3 @@ plugins {
 }
 
 rootProject.name = 'espresso'
-include('lib')
