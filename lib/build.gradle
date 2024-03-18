@@ -3,6 +3,9 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
+group = 'com.ziro'
+version = resolveProjectVersion()
+
 allprojects {
     // With this, we can reference java dependencies within git. https://www.jvt.me/posts/2021/10/27/gradle-plugin-jitpack/
     repositories {
@@ -52,3 +55,10 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+def resolveProjectVersion() {
+    def version = file("${projectDir}/version.txt").text.trim()
+    def gitDescribe = 'git describe --exact-match HEAD'.execute().text.trim()
+    gitDescribe ? version : version + '-SNAPSHOT'
+}
+
