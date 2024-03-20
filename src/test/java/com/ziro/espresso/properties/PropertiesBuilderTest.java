@@ -1,9 +1,14 @@
 package com.ziro.espresso.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.common.io.Resources;
+import java.io.File;
+import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class PropertiesBuilderTest {
@@ -24,9 +29,12 @@ class PropertiesBuilderTest {
     }
 
     @Test
-    void whenLoadingPropertiesFromNonExistentFileThenUsingLoadOptionalIgnoresFileNotFoundError() {
+    void whenLoadingFromMultiplePropertiesResourcesThenNonExistingOptionalResourcesAreIgnored() {
+        File propertiesBuilderTestPropertiesFile =
+                new File(Resources.getResource("properties-builder-test.properties").getFile());
+
         Properties properties = new PropertiesBuilder()
-                .load("properties-builder-test.properties")
+                .load(propertiesBuilderTestPropertiesFile)
                 .loadOptional("some-random-non-existent.properties")
                 .build();
 
@@ -38,11 +46,19 @@ class PropertiesBuilderTest {
     }
 
     @Test
-    void whenLoadingPropertiesFromNonExistentFileThenUsingLoadOptionalResultsInEmptyProperties() {
+    void whenLoadingFromOptionalNonExistingResourceThenNothingIsLoaded() {
         Properties properties = new PropertiesBuilder()
-                .loadOptional("some-random-non-existent.properties")
+                .loadOptional(new File("some-random-non-existent.properties"))
                 .build();
 
         assertThat(properties).isNotNull().isEmpty();
+    }
+
+    @Test
+    void whenLoadingFromNonOptionalNonExistingResourceThenErrorIsThrown() {
+        PropertiesBuilder propertiesBuilder = new PropertiesBuilder();
+        assertThatThrownBy(() -> propertiesBuilder.load("some-random-non-existent.properties"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("resource some-random-non-existent.properties not found.");
     }
 }
