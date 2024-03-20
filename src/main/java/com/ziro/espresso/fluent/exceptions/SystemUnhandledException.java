@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 public class SystemUnhandledException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = "ZIRO encountered an error it could not recover from.";
+    public static final String DEFAULT_MESSAGE = "Something went wrong and caused an unhandled exception.";
 
     private SystemUnhandledException(String message) {
         super(message);
