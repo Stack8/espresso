@@ -70,7 +70,7 @@ public class OkHttpClientFactory {
         }
     }
 
-    public static X509TrustManager createNaiveX509TrustManager() {
+    public static X509TrustManager buildX509TrustManager() {
         return new NaiveX509TrustManager();
     }
 
@@ -78,12 +78,14 @@ public class OkHttpClientFactory {
 
         @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) {
-            // Do nothing - trust all clients
+            // We trust any client/server for now since we deploy in our own OS,
+            // so that there is no need to worry about incoming or outcome transactions
         }
 
         @Override
         public void checkServerTrusted(X509Certificate[] chain, String authType) {
-            // Do nothing - trust all servers
+            // We trust any client/server for now since we deploy in our own OS,
+            // so that there is no need to worry about incoming or outcome transactions
         }
 
         @Override

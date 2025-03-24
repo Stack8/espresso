@@ -1,9 +1,11 @@
 package com.ziro.espresso.formatters;
 
 import com.google.common.base.Preconditions;
+import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@NonNullByDefault
 public class MaxLengthFormatter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MaxLengthFormatter.class);

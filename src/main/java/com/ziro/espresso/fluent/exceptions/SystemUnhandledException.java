@@ -1,10 +1,12 @@
 package com.ziro.espresso.fluent.exceptions;
 
-import javax.annotation.Nonnull;
+import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
+import jakarta.annotation.Nonnull;
 
+@NonNullByDefault
 public class SystemUnhandledException extends RuntimeException {
 
-    public static final String DEFAULT_MESSAGE = "Something went wrong and caused an unhandled exception.";
+    public static final String DEFAULT_MESSAGE = "ZIRO encountered an error it could not recover from.";
 
     private SystemUnhandledException(String message) {
         super(message);
@@ -15,7 +17,7 @@ public class SystemUnhandledException extends RuntimeException {
     }
 
     public static AbstractFluentExceptionSupport<SystemUnhandledException> fluent() {
-        return new Fluent();
+        return new SystemUnhandledException.Fluent();
     }
 
     private static class Fluent extends AbstractFluentExceptionSupport<SystemUnhandledException> {
