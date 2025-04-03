@@ -1,6 +1,5 @@
 package com.ziro.espresso.okhttp3;
 
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -12,9 +11,11 @@ import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-@NonNullByDefault
-public class SynchronousCallAdapterFactory<R, T> extends CallAdapter.Factory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SynchronousCallAdapterFactory.class);
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
+public class SyncResponseAdapterFactory<R, T> extends CallAdapter.Factory {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SyncResponseAdapterFactory.class);
 
     @Override
     public CallAdapter<R, T> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
