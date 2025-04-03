@@ -5,10 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.common.io.Resources;
 import java.io.File;
-import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class PropertiesBuilderTest {
@@ -30,8 +28,8 @@ class PropertiesBuilderTest {
 
     @Test
     void whenLoadingFromMultiplePropertiesResourcesThenNonExistingOptionalResourcesAreIgnored() {
-        File propertiesBuilderTestPropertiesFile =
-                new File(Resources.getResource("properties-builder-test.properties").getFile());
+        File propertiesBuilderTestPropertiesFile = new File(
+                Resources.getResource("properties-builder-test.properties").getFile());
 
         Properties properties = new PropertiesBuilder()
                 .load(propertiesBuilderTestPropertiesFile)

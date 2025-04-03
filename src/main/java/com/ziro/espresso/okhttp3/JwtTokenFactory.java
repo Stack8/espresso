@@ -3,10 +3,9 @@ package com.ziro.espresso.okhttp3;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ziro.espresso.fluent.exceptions.SystemUnhandledException;
 import java.io.IOException;
 import java.util.Objects;
-
-import com.ziro.espresso.fluent.exceptions.SystemUnhandledException;
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
