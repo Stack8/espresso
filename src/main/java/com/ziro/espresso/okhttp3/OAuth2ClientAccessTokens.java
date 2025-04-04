@@ -18,10 +18,10 @@ public class OAuth2ClientAccessTokens {
             return ACCESS_TOKENS_CACHE.get(
                     oauth2ClientAccessTokenRequestParams.toString(),
                     () -> JwtTokenFactory.createAccessToken(
-                            oauth2ClientAccessTokenRequestParams.getScope(),
-                            oauth2ClientAccessTokenRequestParams.getClientId(),
-                            oauth2ClientAccessTokenRequestParams.getClientSecret(),
-                            oauth2ClientAccessTokenRequestParams.getTokenUrl()));
+                            oauth2ClientAccessTokenRequestParams.scope(),
+                            oauth2ClientAccessTokenRequestParams.clientId(),
+                            oauth2ClientAccessTokenRequestParams.clientSecret(),
+                            oauth2ClientAccessTokenRequestParams.tokenUrl()));
         } catch (ExecutionException e) {
             throw SystemUnhandledException.fluent()
                     .message(
