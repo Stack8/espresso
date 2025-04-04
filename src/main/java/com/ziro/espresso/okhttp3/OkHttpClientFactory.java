@@ -74,6 +74,10 @@ public class OkHttpClientFactory {
         return new NaiveX509TrustManager();
     }
 
+    public static X509TrustManager createNaiveX509TrustManager() {
+        return new NaiveX509TrustManager();
+    }
+
     private static class NaiveX509TrustManager implements X509TrustManager {
 
         @Override
