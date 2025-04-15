@@ -51,7 +51,7 @@ public class NameCaseConverterTest {
         assertThat(NameCaseConverter.toNameCase("LOUIS XVI"))
                 .isEqualTo("Louis XVI");
 
-        // Single-letter initials - NOTE: This implementation doesn't handle initials like J.R.R.
+        // Single-letter initials
         assertThat(NameCaseConverter.toNameCase("J. R. R. TOLKIEN"))
                 .isEqualTo("J. R. R. Tolkien");
 
@@ -74,7 +74,7 @@ public class NameCaseConverterTest {
         assertThat(NameCaseConverter.toNameCase("JOHN DOE"))
                 .isEqualTo("John Doe");
 
-        // Names with "St." (Saint) - NOTE: Current implementation might not handle "St." correctly.
+        // Names with "St." (Saint)
         assertThat(NameCaseConverter.toNameCase("st. clair"))
                 .isEqualTo("St. Clair");
     }
