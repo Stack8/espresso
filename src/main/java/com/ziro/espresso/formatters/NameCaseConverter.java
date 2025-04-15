@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 
 /**
- * A utility class for converting strings to Name Case/Proper Case.
+ * A utility class for converting strings to be properly cased.
  * Based on the Ruby NameCase gem: https://github.com/tenderlove/namecase
  */
 public final class NameCaseConverter {
@@ -17,6 +17,7 @@ public final class NameCaseConverter {
     private static final Pattern MAC_MC_CHECK_PATTERN = Pattern.compile("\\bMac[A-Za-z]{2,}[^aciozj]\\b|\\bMc");
     private static final Pattern MAC_MC_REPLACE_PATTERN = Pattern.compile("\\b(Ma?c)([A-Za-z]+)");
     private static final Pattern ROMAN_NUMERAL_PATTERN = Pattern.compile("\\b(" + TENS + ONES + ")\\b");
+    private static final Pattern WORD_AND_APOSTROPHE_PATTERN = Pattern.compile("\\p{L}+");
 
     // Patterns for "son/daughter of" rules (case-insensitive matching needed after initial lowercasing/casing)
     private static final Pattern AL_PATTERN = Pattern.compile("\\bAl(?=\\s+\\w)");
@@ -40,17 +41,7 @@ public final class NameCaseConverter {
             return input;
         }
 
-        // Initial capitalization
-        String[] words = input.split("\\b");
-        StringBuilder workingBuilder = new StringBuilder();
-        for (String word : words) {
-            if (word.matches("\\p{L}+")) {
-                workingBuilder.append(capitalizeFirst(word));
-            } else {
-                workingBuilder.append(word);
-            }
-        }
-        String workingString = workingBuilder.toString();
+        String workingString = applyInitialCapitalization(input);
 
         // Apply specific formatting rules
         workingString = handleApostropheS(workingString);
@@ -60,6 +51,19 @@ public final class NameCaseConverter {
         workingString = handleSpanishConjunctions(workingString);
 
         return workingString;
+    }
+
+    private static String applyInitialCapitalization(String input) {
+        String[] words = input.split("\\b");
+        StringBuilder workingBuilder = new StringBuilder();
+        for (String word : words) {
+            if (WORD_AND_APOSTROPHE_PATTERN.matcher(word).matches()) {
+                workingBuilder.append(capitalizeFirst(word));
+            } else {
+                workingBuilder.append(word);
+            }
+        }
+        return workingBuilder.toString();
     }
 
     private static String capitalizeFirst(String str) {
@@ -95,7 +99,6 @@ public final class NameCaseConverter {
             irishMatcher.appendTail(sbIrish);
             workingString = sbIrish.toString();
 
-            // Apply specific Mac exceptions
             workingString = workingString.replace("MacEdo", "Macedo");
             workingString = workingString.replace("MacEvicius", "Macevicius");
             workingString = workingString.replace("MacHado", "Machado");
