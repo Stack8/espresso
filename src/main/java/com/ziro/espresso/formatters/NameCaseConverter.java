@@ -1,8 +1,8 @@
 package com.ziro.espresso.formatters;
 
+import com.google.common.base.Strings;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.google.common.base.Strings;
 
 /**
  * A utility class for converting strings to be properly cased.
@@ -80,7 +80,8 @@ public final class NameCaseConverter {
         StringBuilder sb = new StringBuilder();
         Matcher matcher = APOSTROPHE_S_END_PATTERN.matcher(input);
         while (matcher.find()) {
-            matcher.appendReplacement(sb, Matcher.quoteReplacement("'" + matcher.group(1).toLowerCase()));
+            matcher.appendReplacement(
+                    sb, Matcher.quoteReplacement("'" + matcher.group(1).toLowerCase()));
         }
         matcher.appendTail(sb);
         return sb.toString();
@@ -120,7 +121,8 @@ public final class NameCaseConverter {
     private static String handleSonOfParticles(String input) {
         String workingString = input;
         workingString = AL_PATTERN.matcher(workingString).replaceAll("al");
-        workingString = BIN_BINTI_BINTE_PATTERN.matcher(workingString).replaceAll(mr -> mr.group(1).toLowerCase());
+        workingString = BIN_BINTI_BINTE_PATTERN.matcher(workingString).replaceAll(mr -> mr.group(1)
+                .toLowerCase());
         workingString = AP_PATTERN.matcher(workingString).replaceAll("ap");
         workingString = BEN_PATTERN.matcher(workingString).replaceAll("ben");
         workingString = DELLA_DELLE_PATTERN.matcher(workingString).replaceAll("dell$1");

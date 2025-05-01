@@ -1,16 +1,13 @@
 plugins {
     id 'java'
     id 'com.diffplug.spotless' version '6.25.0'
+    id 'maven-publish'
 }
 
 allprojects {
     // With this, we can reference java dependencies within git. https://www.jvt.me/posts/2021/10/27/gradle-plugin-jitpack/
     repositories {
         mavenCentral()
-        maven {
-            url 'https://jitpack.io'
-            content {includeGroupByRegex 'com.github.stack8.*' }
-        }
     }
     // Don't cache snapshots
     configurations.all {
@@ -43,6 +40,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
     implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     testImplementation 'org.assertj:assertj-core:3.25.3'
@@ -59,6 +61,31 @@ version = resolveProjectVersion()
 
 def resolveProjectVersion() {
     def version = file("${rootDir}/version.txt").text.trim()
-    def gitDescribe = 'git describe --exact-match HEAD'.execute().text.trim()
-    gitDescribe ? version : version + '-SNAPSHOT'
+    //    project.hasProperty("snapshot") ? version : version + '-SNAPSHOT'
+}
+
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact("build/libs/espresso-${version}.jar") {
+                extension 'jar'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri("https://repository.goziro.com/repository/engineering/")
+            credentials {
+                try {
+                    username = System.getenv("SONATYPE_USERNAME") as String
+                    password = System.getenv("SONATYPE_PASSWORD") as String
+                } catch (NullPointerException e) {
+                    throw new Exception("SONATYPE_USERNAME and SONATYPE_PASSWORD environment variables are not set! Please see the README for instructions on how to do this.", e)
+                }
+            }
+        }
+    }
 }
