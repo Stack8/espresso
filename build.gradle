@@ -60,7 +60,7 @@ version = resolveProjectVersion()
 
 def resolveProjectVersion() {
     def branch = gitBranch()
-    log.error(branch)
+    logger.error(branch)
     if (branch == 'main') {
         return file("${rootDir}/version.txt").text.trim()
     } else {
