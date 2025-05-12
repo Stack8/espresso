@@ -38,10 +38,9 @@ dependencies {
     implementation 'com.google.guava:guava:32.1.1-jre'
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
     implementation 'org.slf4j:slf4j-api:2.0.12'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
@@ -60,8 +59,21 @@ group = 'com.ziro.engineering'
 version = resolveProjectVersion()
 
 def resolveProjectVersion() {
-    def version = file("${rootDir}/version.txt").text.trim()
-    //    project.hasProperty("snapshot") ? version : version + '-SNAPSHOT'
+    def branch = gitBranch()
+    if (branch == 'main') {
+        return file("${rootDir}/version.txt").text.trim()
+    } else {
+        return branch + '-SNAPSHOT'
+    }
+}
+
+def gitBranch() {
+    def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    branch
 }
 
 
