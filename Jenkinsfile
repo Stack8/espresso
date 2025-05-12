@@ -4,18 +4,10 @@ pipeline {
     }
 
     stages {
-        stage('build') {
+        stage('build and test') {
             steps {
                 script {
-                    echo "build"
-                }
-            }
-        }
-
-        stage('test') {
-            steps {
-                script {
-                    echo "test"
+                    echo "./gradlew clean build test"
                 }
             }
         }
