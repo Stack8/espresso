@@ -10,6 +10,12 @@ pipeline {
                     echo "./gradlew clean build test"
                 }
             }
+            post {
+                always {
+                   archiveArtifacts allowEmptyArchive: true,
+                           artifacts: '**/reports/checkstyle/**, **/reports/tests/**'
+               }
+            }
         }
 
         // Note: tagging stage MUST come before publishing to prevent a new artifact from overwriting an existing
