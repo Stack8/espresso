@@ -7,7 +7,7 @@ pipeline {
         stage('build and test') {
             steps {
                 script {
-                    echo "./gradlew clean build test"
+                    sh "./gradlew clean build test"
                 }
             }
             post {
