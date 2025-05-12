@@ -13,7 +13,7 @@ pipeline {
             post {
                 always {
                    archiveArtifacts allowEmptyArchive: true,
-                           artifacts: 'build/reports/tests/**'
+                           artifacts: '**'
                }
             }
         }
