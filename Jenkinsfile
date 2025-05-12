@@ -37,7 +37,11 @@ pipeline {
         stage('publish') {
             steps {
                 script {
-                    sh "./gradlew publish"
+                    withCredentials([
+                        usernamePassword(credentialsId: 'sonatype-creds', usernameVariable: 'SONATYPE_USERNAME', passwordVariable: 'SONATYPE_PASSWORD')
+                    ]) {
+                        sh "./gradlew publish"
+                    }
                 }
             }
         }
