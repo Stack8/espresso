@@ -3,6 +3,11 @@ pipeline {
         label "master"
     }
 
+    tools {
+        jdk 'default'
+    }
+
+
     stages {
         stage('build and test') {
             steps {
