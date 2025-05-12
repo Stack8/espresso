@@ -5,14 +5,18 @@ pipeline {
 
     stages {
         stage('build') {
-            script {
-                echo "build"
+            steps {
+                script {
+                    echo "build"
+                }
             }
         }
 
         stage('test') {
-            script {
-                echo "test"
+            steps {
+                script {
+                    echo "test"
+                }
             }
         }
 
@@ -20,14 +24,18 @@ pipeline {
         // artifact for a specific version. Tagging will fail if you attempt to duplicate a tag, and prevents a duplicated
         // artifact from being published
         stage('tag') {
-            script {
-                echo "tag"
+            steps {
+                script {
+                    echo "tag"
+                }
             }
         }
 
         stage('publish') {
-            script {
-                echo "publish"
+            steps {
+                script {
+                    echo "publish"
+                }
             }
         }
     }
