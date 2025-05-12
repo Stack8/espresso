@@ -24,8 +24,6 @@ class MoreListsTest {
         list2.add(2);
         list2.add(3);
         assertListContainsExactlyInAnyOrder(MoreLists.union(lists), 1, 2, 3);
-        System.out.println("TROUBLESHOOOT");
-        assertThat(true).isFalse();
     }
 
     @Test
