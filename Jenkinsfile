@@ -6,6 +6,7 @@ pipeline {
         jdk 'default'
     }
 
+
     stages {
         stage('temp') {
             steps {
