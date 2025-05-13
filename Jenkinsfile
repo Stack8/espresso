@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     echo "temp"
-                    echo BRANCH_NAME
+                    sh "git rev-parse --abbrev-ref HEAD"
                 }
             }
         }
