@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     echo "temp"
-                    sh "git rev-parse --abbrev-ref HEAD"
+                    sh "git branch --show-current"
                 }
             }
         }
