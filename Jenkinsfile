@@ -39,6 +39,7 @@ pipeline {
                     def tag = "v${version}"
 
                     withCredentials([gitUsernamePassword(credentialsId: 'github-http', gitToolName: 'Default')]) {
+                        sh "git tag | xargs git tag -d"
                         sh "git fetch --tags"
                         sh "git tag -a ${tag} -m \"espresso version ${tag}\""
                         sh "git push origin ${tag}"
