@@ -12,6 +12,8 @@ pipeline {
                 script {
                     def version = sh(script: "cat ./version.txt", returnStdout: true)
                     echo "Version: ${version}"
+                    echo env.GIT_BRANCH
+                    echo env.BRANCH_NAME
                 }
             }
         }
