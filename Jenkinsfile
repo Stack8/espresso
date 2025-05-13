@@ -35,11 +35,13 @@ pipeline {
                         return
                     }
 
-                    def version = sh(script: "cat ./version.txt", returnStdout: true)
+                    def version = sh(script: "cat ./version.txt", returnStdout: true).trim()
                     def tag = "v${version}"
 
-                    sh "git tag -a ${tag} -m \"espresso version ${tag}\""
-                    sh "git push origin ${tag}"
+                    withCredentials([gitUsernamePassword(credentialsId: 'github-http', gitToolName: 'Default')]) {
+                        sh "git tag -a ${tag} -m \"espresso version ${tag}\""
+                        sh "git push origin ${tag}"
+                    }
 
                     withCredentials([
                         usernamePassword(credentialsId: 'sonatype-creds', usernameVariable: 'SONATYPE_USERNAME', passwordVariable: 'SONATYPE_PASSWORD')
