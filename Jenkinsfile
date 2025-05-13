@@ -45,7 +45,8 @@ pipeline {
                     withCredentials([
                         usernamePassword(credentialsId: 'sonatype-creds', usernameVariable: 'SONATYPE_USERNAME', passwordVariable: 'SONATYPE_PASSWORD')
                     ]) {
-                        sh "./gradlew clean build publish"
+                        sh "./gradlew clean build"
+                        sh "./gradlew publish"
                     }
                 }
             }
