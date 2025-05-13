@@ -1,3 +1,5 @@
+def branch =
+
 pipeline {
     agent {
         label "master"
@@ -26,14 +28,13 @@ pipeline {
         // artifact for a specific version. Tagging will fail if you attempt to duplicate a tag, and prevents a duplicated
         // artifact from being published
         stage('tag-and-publish') {
-            def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
-            when {
-                expression {
-                    branch == 'main'
-                }
-            }
             steps {
                 script {
+                    def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
+                    if (branch != 'main') {
+                        echo "Skipping tagging and publishing for non-main branch: ${branch}"
+                        return
+                    }
                     withCredentials([
                         usernamePassword(credentialsId: 'sonatype-creds', usernameVariable: 'SONATYPE_USERNAME', passwordVariable: 'SONATYPE_PASSWORD')
                     ]) {
