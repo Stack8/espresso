@@ -34,6 +34,13 @@ pipeline {
                         echo "Skipping tagging and publishing for non-main branch: ${branch}"
                         return
                     }
+
+                    def version = sh(script: "cat ./version.txt", returnStdout: true)
+                    def tag = "v${version}"
+
+                    sh "git tag -a ${tag} -m \"espresso version ${tag}\""
+                    sh "git push origin ${tag}"
+
                     withCredentials([
                         usernamePassword(credentialsId: 'sonatype-creds', usernameVariable: 'SONATYPE_USERNAME', passwordVariable: 'SONATYPE_PASSWORD')
                     ]) {
