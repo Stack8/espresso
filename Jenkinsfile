@@ -8,16 +8,6 @@ pipeline {
 
 
     stages {
-        stage('temp') {
-            steps {
-                script {
-                    def version = sh(script: "cat ./version.txt", returnStdout: true)
-                    echo "Version: ${version}"
-                    echo GIT_BRANCH
-                    echo BRANCH_NAME
-                }
-            }
-        }
         stage('test') {
             steps {
                 script {
@@ -36,14 +26,14 @@ pipeline {
         // artifact for a specific version. Tagging will fail if you attempt to duplicate a tag, and prevents a duplicated
         // artifact from being published
         stage('tag-and-publish') {
+            def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
+            when {
+                expression {
+                    branch == 'main'
+                }
+            }
             steps {
                 script {
-                    def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
-                    echo "Branch: ${branch}"
-                    if (branch == 'main') {
-                        echo "do tagging"
-                    }
-                    echo "publish"
                     withCredentials([
                         usernamePassword(credentialsId: 'sonatype-creds', usernameVariable: 'SONATYPE_USERNAME', passwordVariable: 'SONATYPE_PASSWORD')
                     ]) {
