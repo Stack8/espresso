@@ -28,7 +28,8 @@ pipeline {
         stage('tag-and-publish') {
             steps {
                 script {
-                    def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
+//                     def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
+                    def branch = 'main'
                     if (branch != 'main') {
                         echo "Skipping tagging and publishing for non-main branch: ${branch}"
                         return
