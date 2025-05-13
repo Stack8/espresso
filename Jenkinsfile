@@ -9,7 +9,15 @@ pipeline {
 
 
     stages {
-        stage('build and test') {
+        stage('temp') {
+            steps {
+                script {
+                    echo "temp"
+                    echo BRANCH_NAME
+                }
+            }
+        }
+        stage('test') {
             steps {
                 script {
                     sh "./gradlew clean build test"
@@ -30,6 +38,14 @@ pipeline {
             steps {
                 script {
                     echo "tag"
+                }
+            }
+        }
+
+        stage('build') {
+            steps {
+                script {
+                    echo "build"
                 }
             }
         }
