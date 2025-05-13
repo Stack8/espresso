@@ -1,5 +1,3 @@
-def branch =
-
 pipeline {
     agent {
         label "master"
