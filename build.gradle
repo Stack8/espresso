@@ -80,10 +80,7 @@ def gitBranch() {
 
 
 publishing {
-    logger.error("CI CHECK START")
-    logger.error(System.getenv().getOrDefault('CI_MODE', 'false'))
-    logger.error("CI CHECK END")
-    if (System.getenv().getOrDefault('CI_MODE', 'false')) {
+    if (System.getenv().getOrDefault('CI_MODE', 'false') != 'true' && !version.contains('SNAPSHOT')) {
         throw new GradleException("You are attempting to publish a release from your local environment. Publishing releases is handled by CI")
     }
     publications {
