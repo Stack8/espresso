@@ -11,7 +11,8 @@ pipeline {
         stage('temp') {
             steps {
                 script {
-                    echo BRANCH_NAME
+                    def version = sh(script: "cat ./version.txt", returnStdout: true)
+                    echo "Version: ${version}"
                 }
             }
         }
