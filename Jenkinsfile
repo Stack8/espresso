@@ -12,8 +12,7 @@ pipeline {
         stage('temp') {
             steps {
                 script {
-                    echo "temp"
-                    sh "git branch --show-current"
+                    echo BRANCH_NAME
                 }
             }
         }
@@ -34,29 +33,19 @@ pipeline {
         // Note: tagging stage MUST come before publishing to prevent a new artifact from overwriting an existing
         // artifact for a specific version. Tagging will fail if you attempt to duplicate a tag, and prevents a duplicated
         // artifact from being published
-        stage('tag') {
+        stage('tag-and-publish') {
             steps {
                 script {
-                    echo "tag"
-                }
-            }
-        }
-
-        stage('build') {
-            steps {
-                script {
-                    echo "build"
-                }
-            }
-        }
-
-        stage('publish') {
-            steps {
-                script {
+                    def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
+                    echo "Branch: ${branch}"
+                    if (branch == 'main') {
+                        echo "do tagging"
+                    }
+                    echo "publish"
                     withCredentials([
                         usernamePassword(credentialsId: 'sonatype-creds', usernameVariable: 'SONATYPE_USERNAME', passwordVariable: 'SONATYPE_PASSWORD')
                     ]) {
-                        sh "./gradlew publish"
+                        sh "./gradlew clean build publish"
                     }
                 }
             }
