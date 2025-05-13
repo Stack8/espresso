@@ -39,6 +39,8 @@ pipeline {
                     def tag = "v${version}"
 
                     withCredentials([gitUsernamePassword(credentialsId: 'github-http', gitToolName: 'Default')]) {
+                        // Clear all tags locally and fetch from origin. If pushing a tag fails for some reason, it will
+                        // continue to exist in jenkins even though it won't be present in origin
                         sh "git tag | xargs git tag -d"
                         sh "git fetch --tags"
                         sh "git tag -a ${tag} -m \"espresso version ${tag}\""

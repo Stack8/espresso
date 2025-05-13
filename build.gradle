@@ -80,6 +80,12 @@ def gitBranch() {
 
 
 publishing {
+    logger.error("CI CHECK START")
+    logger.error(System.getenv().getOrDefault('CI_MODE', 'false'))
+    logger.error("CI CHECK END")
+    if (System.getenv().getOrDefault('CI_MODE', 'false')) {
+        throw new GradleException("You are attempting to publish a release from your local environment. Publishing releases is handled by CI")
+    }
     publications {
         maven(MavenPublication) {
             artifact("build/libs/espresso-${version}.jar") {
