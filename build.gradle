@@ -88,7 +88,7 @@ publishing {
                     username = System.getenv("SONATYPE_USERNAME") as String
                     password = System.getenv("SONATYPE_PASSWORD") as String
                 } catch (NullPointerException e) {
-                    throw new Exception("SONATYPE_USERNAME and SONATYPE_PASSWORD environment variables are not set! Please see the README for instructions on how to do this.", e)
+                    throw new Exception("SONATYPE_USERNAME and/or SONATYPE_PASSWORD environment variables are not set! Configure the following environment variables: SONATYPE_USERNAME=gradle SONATYPE_PASSWORD=<get password from 1pass>", e)
                 }
             }
         }
