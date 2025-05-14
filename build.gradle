@@ -59,7 +59,7 @@ group = 'com.ziro.engineering'
 version = resolveProjectVersion()
 
 def resolveProjectVersion() {
-    def branch = gitBranch()
+    def branch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
     logger.error(branch)
     if (branch == 'main') {
         return file("${rootDir}/version.txt").text.trim()
@@ -67,17 +67,6 @@ def resolveProjectVersion() {
         return branch + '-SNAPSHOT'
     }
 }
-
-def gitBranch() {
-    def branch = ""
-    def proc = "git rev-parse --abbrev-ref HEAD".execute()
-    proc.in.eachLine { line -> branch = line }
-    proc.err.eachLine { line -> println line }
-    proc.waitFor()
-    branch
-}
-
-
 
 publishing {
     if (System.getenv().getOrDefault('CI_MODE', 'false') != 'true' && !version.contains('SNAPSHOT')) {
