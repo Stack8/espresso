@@ -11,7 +11,6 @@ pipeline {
         VERSION = readFile("${WORKSPACE}/version.txt").trim()
     }
 
-
     stages {
         stage('tag') {
             when {
@@ -24,7 +23,7 @@ pipeline {
                         // continue to exist in jenkins even though it won't be present in origin
                         sh "git tag | xargs git tag -d"
                         sh "git fetch --tags"
-                        sh "git tag -a ${tag} -m \"espresso version v${env.VERSION}\""
+                        sh "git tag -a v${env.VERSION} -m \"espresso version v${env.VERSION}\""
                     }
                 }
             }
