@@ -1,16 +1,13 @@
 plugins {
     id 'java'
     id 'com.diffplug.spotless' version '6.25.0'
+    id 'maven-publish'
 }
 
 allprojects {
     // With this, we can reference java dependencies within git. https://www.jvt.me/posts/2021/10/27/gradle-plugin-jitpack/
     repositories {
         mavenCentral()
-        maven {
-            url 'https://jitpack.io'
-            content {includeGroupByRegex 'com.github.stack8.*' }
-        }
     }
     // Don't cache snapshots
     configurations.all {
@@ -41,8 +38,12 @@ dependencies {
     implementation 'com.google.guava:guava:32.1.1-jre'
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
     implementation 'org.slf4j:slf4j-api:2.0.12'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     testImplementation 'org.assertj:assertj-core:3.25.3'
@@ -58,7 +59,34 @@ group = 'com.ziro.engineering'
 version = resolveProjectVersion()
 
 def resolveProjectVersion() {
-    def version = file("${rootDir}/version.txt").text.trim()
     def gitDescribe = 'git describe --exact-match HEAD'.execute().text.trim()
-    gitDescribe ? version : version + '-SNAPSHOT'
+    def version = file("${rootDir}/version.txt").text.trim()
+    return gitDescribe ? version : version + '-SNAPSHOT'
+}
+
+publishing {
+    if (System.getenv().getOrDefault('CI_MODE', 'false') != 'true' && !version.contains('SNAPSHOT')) {
+        throw new GradleException("You are attempting to publish a release from your local environment. Publishing releases is handled by CI")
+    }
+    publications {
+        maven(MavenPublication) {
+            artifact("build/libs/espresso-${version}.jar") {
+                extension 'jar'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri("https://repository.goziro.com/repository/engineering/")
+            credentials {
+                try {
+                    username = System.getenv("SONATYPE_USERNAME") as String
+                    password = System.getenv("SONATYPE_PASSWORD") as String
+                } catch (Exception e) {
+                    throw new Exception("SONATYPE_USERNAME and/or SONATYPE_PASSWORD environment variables are not set! Configure the following environment variables: SONATYPE_USERNAME=gradle SONATYPE_PASSWORD=<get password from 1pass>", e)
+                }
+            }
+        }
+    }
 }
