@@ -1,5 +1,3 @@
-def tag = ''
-
 pipeline {
     agent {
         label 'master'
@@ -12,7 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('tag') {
+        stage('create-tag') {
             when {
                 branch 'main'
             }
