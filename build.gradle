@@ -59,12 +59,9 @@ group = 'com.ziro.engineering'
 version = resolveProjectVersion()
 
 def resolveProjectVersion() {
-    def branch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
-    if (branch == 'main') {
-        return file("${rootDir}/version.txt").text.trim()
-    } else {
-        return branch + '-SNAPSHOT'
-    }
+    def gitDescribe = 'git describe --exact-match HEAD'.execute().text.trim()
+    def version = file("${rootDir}/version.txt").text.trim()
+    return gitDescribe ? version : version + '-SNAPSHOT'
 }
 
 publishing {
