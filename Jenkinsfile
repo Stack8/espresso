@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('create-tag') {
             when {
-                branch 'main'
+                branch '19518_migrate-espresso-to-sonatype'
             }
             steps {
                 script {
@@ -46,7 +46,7 @@ pipeline {
         // artifact from being published
         stage('push-tag') {
             when {
-                branch 'main'
+                branch '19518_migrate-espresso-to-sonatype'
             }
             steps {
                 script {
@@ -59,7 +59,7 @@ pipeline {
 
         stage('publish') {
             when {
-                branch 'main'
+                branch '19518_migrate-espresso-to-sonatype'
             }
             steps {
                 script {
