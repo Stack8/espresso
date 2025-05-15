@@ -60,7 +60,6 @@ version = resolveProjectVersion()
 
 def resolveProjectVersion() {
     def branch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
-    logger.error(branch)
     if (branch == 'main') {
         return file("${rootDir}/version.txt").text.trim()
     } else {
@@ -87,7 +86,7 @@ publishing {
                 try {
                     username = System.getenv("SONATYPE_USERNAME") as String
                     password = System.getenv("SONATYPE_PASSWORD") as String
-                } catch (NullPointerException e) {
+                } catch (Exception e) {
                     throw new Exception("SONATYPE_USERNAME and/or SONATYPE_PASSWORD environment variables are not set! Configure the following environment variables: SONATYPE_USERNAME=gradle SONATYPE_PASSWORD=<get password from 1pass>", e)
                 }
             }
