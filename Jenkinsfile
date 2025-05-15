@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('create-tag') {
             when {
-                branch 'PR-5'
+                branch 'main'
             }
             steps {
                 script {
@@ -46,7 +46,7 @@ pipeline {
         // artifact from being published
         stage('push-tag') {
             when {
-                branch 'PR-5'
+                branch 'main'
             }
             steps {
                 script {
@@ -59,7 +59,7 @@ pipeline {
 
         stage('publish') {
             when {
-                branch 'PR-5'
+                branch 'main'
             }
             steps {
                 script {
