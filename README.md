@@ -23,3 +23,9 @@ job which builds and tests the repo, then attempts to tag the appropriate commit
 `./version.txt`. YOU MUST BUMP THE VERSION WHEN MAKING CODE CHANGES. Please follow [semantic versioning](https://semver.org/)
 
 ### Release Notes
+Once you merge your changes, CI will publish a new version to Nexus and tag the repo. The last thing to do is to go to:
+
+https://github.com/Stack8/espresso/releases
+
+And publish a new release. Click draft a new release, and select your tag, the previous tag, and click generate release notes. 
+Make sure "Set as the latest release" is selected, and publish your release. Now you're good to go! 
