@@ -16,26 +16,55 @@ public class SystemUnhandledException extends RuntimeException {
         super(message, cause);
     }
 
-    public static AbstractFluentExceptionSupport<SystemUnhandledException> fluent() {
-        return new SystemUnhandledException.Fluent();
+    // Creates a new exception builder that will wrap the given cause.
+    public static AbstractFluentExceptionSupport<SystemUnhandledException> withCause(Throwable cause) {
+        return new AbstractFluentExceptionSupport<SystemUnhandledException>() {
+            @Nonnull
+            @Override
+            protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
+                return new SystemUnhandledException(message, cause);
+            }
+
+            @Nonnull
+            @Override
+            protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
+                return new SystemUnhandledException(message, cause);
+            }
+        };
     }
 
-    private static class Fluent extends AbstractFluentExceptionSupport<SystemUnhandledException> {
+    // Creates a new exception builder that will be a root cause (no wrapped exception).
+    public static AbstractFluentExceptionSupport<SystemUnhandledException> asRootCause() {
+        return new AbstractFluentExceptionSupport<SystemUnhandledException>() {
+            @Nonnull
+            @Override
+            protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
+                return new SystemUnhandledException(message);
+            }
 
-        private Fluent() {
-            message(DEFAULT_MESSAGE);
-        }
+            @Nonnull
+            @Override
+            protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
+                return new SystemUnhandledException(message);
+            }
+        };
+    }
 
-        @Nonnull
-        @Override
-        protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
-            return new SystemUnhandledException(message);
-        }
+    // @deprecated Use withCause(Throwable) or asRootCause() instead
+    @Deprecated
+    public static AbstractFluentExceptionSupport<SystemUnhandledException> fluent() {
+        return new AbstractFluentExceptionSupport<SystemUnhandledException>() {
+            @Nonnull
+            @Override
+            protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
+                return new SystemUnhandledException(message);
+            }
 
-        @Nonnull
-        @Override
-        protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
-            return new SystemUnhandledException(message, cause);
-        }
+            @Nonnull
+            @Override
+            protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
+                return new SystemUnhandledException(message, cause);
+            }
+        };
     }
 }

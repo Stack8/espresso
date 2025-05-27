@@ -23,6 +23,8 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
 
     protected AbstractFluentExceptionSupport() {}
 
+    // @deprecated Use withCause(Throwable) or asRootCause() instead
+    @Deprecated
     public AbstractFluentExceptionSupport<T> message(String message, Object... messageArgs) {
         if (messageArgs.length > 0) {
             this.message = String.format(message, messageArgs);
@@ -32,6 +34,8 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
         return this;
     }
 
+    // @deprecated Use withCause(Throwable) or asRootCause() instead
+    @Deprecated
     public AbstractFluentExceptionSupport<T> message(Supplier<String> messageSupplier) {
         this.message = messageSupplier.get();
         return this;
@@ -41,6 +45,8 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
         return Optional.ofNullable(message);
     }
 
+    // @deprecated Use withCause(Throwable) or asRootCause() instead
+    @Deprecated
     public AbstractFluentExceptionSupport<T> cause(Throwable cause) {
         this.cause = cause;
         return this;
@@ -50,12 +56,40 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
         return Optional.ofNullable(cause);
     }
 
-    /**
-     * Throws exception if condition not satisfied.
-     * IntelliJ understands that this throws an exception, however, it does understand if the condition is null
-     * checking. Hence, you may need extra null checks to make IntelliJ happy if your condition is null checking.
-     * @throws T thrown exception.
-     */
+    // Creates a new exception builder that will wrap the given cause.
+    public static <T extends Throwable> AbstractFluentExceptionSupport<T> withCause(Throwable cause) {
+        AbstractFluentExceptionSupport<T> builder = new AbstractFluentExceptionSupport<T>() {
+            @Override
+            protected T createExceptionWith(String message) {
+                return createExceptionWith(message, cause);
+            }
+
+            @Override
+            protected T createExceptionWith(String message, Throwable cause) {
+                return createExceptionWith(message, cause);
+            }
+        };
+        builder.cause = cause;
+        return builder;
+    }
+
+    // Creates a new exception builder that will be a root cause (no wrapped exception).
+    public static <T extends Throwable> AbstractFluentExceptionSupport<T> asRootCause() {
+        return new AbstractFluentExceptionSupport<T>() {
+            @Override
+            protected T createExceptionWith(String message) {
+                return createExceptionWith(message);
+            }
+
+            @Override
+            protected T createExceptionWith(String message, Throwable cause) {
+                return createExceptionWith(message);
+            }
+        };
+    }
+
+    // Throws exception if condition not satisfied.
+    // Note: IntelliJ understands that this throws an exception, but may need extra null checks for null checking conditions.
     public void throwIf(boolean condition) throws T {
         if (condition) {
             throw exception();
