@@ -63,7 +63,8 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
     }
 
     // Throws exception if condition not satisfied.
-    // Note: IntelliJ understands that this throws an exception, but may need extra null checks for null checking conditions.
+    // Note: IntelliJ understands that this throws an exception but may need extra null checks for null checking
+    // conditions.
     @Override
     public void throwIf(boolean condition) throws T {
         if (condition) {

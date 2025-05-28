@@ -63,9 +63,8 @@ public class PropertiesBuilder {
         try (InputStream in = url.openStream()) {
             properties.load(in);
         } catch (Exception e) {
-            throw SystemUnhandledException.fluent()
+            throw SystemUnhandledException.withCause(e)
                     .message("Something went wrong while trying to load properties from [url=%s]", url)
-                    .cause(e)
                     .exception();
         }
         return this;
@@ -83,7 +82,7 @@ public class PropertiesBuilder {
         try {
             return file.toURI().toURL();
         } catch (MalformedURLException e) {
-            throw SystemUnhandledException.fluent()
+            throw SystemUnhandledException.withCause(e)
                     .message("Something went wrong while trying to convert file [name=%s] to URL.", file.getName())
                     .exception();
         }

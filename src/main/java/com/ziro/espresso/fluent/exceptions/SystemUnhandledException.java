@@ -34,12 +34,13 @@ public class SystemUnhandledException extends RuntimeException {
         return new SystemUnhandledExceptionBuilder();
     }
 
-    private static class SystemUnhandledExceptionBuilder extends AbstractFluentExceptionSupport<SystemUnhandledException> {
-        
+    private static class SystemUnhandledExceptionBuilder
+            extends AbstractFluentExceptionSupport<SystemUnhandledException> {
+
         public SystemUnhandledExceptionBuilder() {
             super(DEFAULT_MESSAGE);
         }
-        
+
         @Nonnull
         @Override
         protected SystemUnhandledException createExceptionWith(@Nonnull String message) {

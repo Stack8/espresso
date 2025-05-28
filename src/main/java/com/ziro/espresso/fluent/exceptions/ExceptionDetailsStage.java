@@ -18,4 +18,4 @@ public interface ExceptionDetailsStage<T extends Throwable> {
     T exception();
 
     void throwIf(boolean condition) throws T;
-} 
+}
