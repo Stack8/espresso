@@ -11,9 +11,11 @@ import java.util.function.Supplier;
  * Provides fluent support to any type of throwable.
  */
 @NonNullByDefault
-public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
+public abstract class AbstractFluentExceptionSupport<T extends Throwable> implements ExceptionDetailsStage<T> {
 
-    private static final String DEFAULT_EXCEPTION_MESSAGE = "Something went wrong.";
+    private static final String FALLBACK_DEFAULT_MESSAGE = "Something went wrong.";
+
+    private final String defaultMessage;
 
     @Nullable
     private String message;
@@ -21,24 +23,12 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
     @Nullable
     private Throwable cause;
 
-    protected AbstractFluentExceptionSupport() {}
-
-    // @deprecated Use withCause(Throwable) or asRootCause() instead
-    @Deprecated
-    public AbstractFluentExceptionSupport<T> message(String message, Object... messageArgs) {
-        if (messageArgs.length > 0) {
-            this.message = String.format(message, messageArgs);
-        } else {
-            this.message = message;
-        }
-        return this;
+    protected AbstractFluentExceptionSupport() {
+        this.defaultMessage = FALLBACK_DEFAULT_MESSAGE;
     }
 
-    // @deprecated Use withCause(Throwable) or asRootCause() instead
-    @Deprecated
-    public AbstractFluentExceptionSupport<T> message(Supplier<String> messageSupplier) {
-        this.message = messageSupplier.get();
-        return this;
+    protected AbstractFluentExceptionSupport(String defaultMessage) {
+        this.defaultMessage = defaultMessage;
     }
 
     protected Optional<String> message() {
@@ -56,48 +46,34 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
         return Optional.ofNullable(cause);
     }
 
-    // Creates a new exception builder that will wrap the given cause.
-    public static <T extends Throwable> AbstractFluentExceptionSupport<T> withCause(Throwable cause) {
-        AbstractFluentExceptionSupport<T> builder = new AbstractFluentExceptionSupport<T>() {
-            @Override
-            protected T createExceptionWith(String message) {
-                return createExceptionWith(message, cause);
-            }
-
-            @Override
-            protected T createExceptionWith(String message, Throwable cause) {
-                return createExceptionWith(message, cause);
-            }
-        };
-        builder.cause = cause;
-        return builder;
+    @Override
+    public ExceptionDetailsStage<T> message(String message, Object... messageArgs) {
+        if (messageArgs.length > 0) {
+            this.message = String.format(message, messageArgs);
+        } else {
+            this.message = message;
+        }
+        return this;
     }
 
-    // Creates a new exception builder that will be a root cause (no wrapped exception).
-    public static <T extends Throwable> AbstractFluentExceptionSupport<T> asRootCause() {
-        return new AbstractFluentExceptionSupport<T>() {
-            @Override
-            protected T createExceptionWith(String message) {
-                return createExceptionWith(message);
-            }
-
-            @Override
-            protected T createExceptionWith(String message, Throwable cause) {
-                return createExceptionWith(message);
-            }
-        };
+    @Override
+    public ExceptionDetailsStage<T> message(Supplier<String> messageSupplier) {
+        this.message = messageSupplier.get();
+        return this;
     }
 
     // Throws exception if condition not satisfied.
     // Note: IntelliJ understands that this throws an exception, but may need extra null checks for null checking conditions.
+    @Override
     public void throwIf(boolean condition) throws T {
         if (condition) {
             throw exception();
         }
     }
 
+    @Override
     public T exception() {
-        String exceptionMessage = message().orElse(DEFAULT_EXCEPTION_MESSAGE);
+        String exceptionMessage = message().orElse(defaultMessage);
         return cause().map(theCause -> {
                     if (hasSuppressedExceptions(theCause)) {
                         String exceptionMessageWithRootCause = appendRootCauseToMessage(exceptionMessage, theCause);
@@ -136,4 +112,9 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> {
     protected abstract T createExceptionWith(String message);
 
     protected abstract T createExceptionWith(String message, Throwable cause);
+
+    // Used by the concrete exception classes
+    void setCause(Throwable cause) {
+        this.cause = cause;
+    }
 }

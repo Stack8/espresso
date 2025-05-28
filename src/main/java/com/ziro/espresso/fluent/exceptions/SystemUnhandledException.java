@@ -17,54 +17,39 @@ public class SystemUnhandledException extends RuntimeException {
     }
 
     // Creates a new exception builder that will wrap the given cause.
-    public static AbstractFluentExceptionSupport<SystemUnhandledException> withCause(Throwable cause) {
-        return new AbstractFluentExceptionSupport<SystemUnhandledException>() {
-            @Nonnull
-            @Override
-            protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
-                return new SystemUnhandledException(message, cause);
-            }
-
-            @Nonnull
-            @Override
-            protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
-                return new SystemUnhandledException(message, cause);
-            }
-        };
+    public static ExceptionDetailsStage<SystemUnhandledException> withCause(Throwable cause) {
+        SystemUnhandledExceptionBuilder builder = new SystemUnhandledExceptionBuilder();
+        builder.setCause(cause);
+        return builder;
     }
 
     // Creates a new exception builder that will be a root cause (no wrapped exception).
-    public static AbstractFluentExceptionSupport<SystemUnhandledException> asRootCause() {
-        return new AbstractFluentExceptionSupport<SystemUnhandledException>() {
-            @Nonnull
-            @Override
-            protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
-                return new SystemUnhandledException(message);
-            }
-
-            @Nonnull
-            @Override
-            protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
-                return new SystemUnhandledException(message);
-            }
-        };
+    public static ExceptionDetailsStage<SystemUnhandledException> asRootCause() {
+        return new SystemUnhandledExceptionBuilder();
     }
 
     // @deprecated Use withCause(Throwable) or asRootCause() instead
     @Deprecated
     public static AbstractFluentExceptionSupport<SystemUnhandledException> fluent() {
-        return new AbstractFluentExceptionSupport<SystemUnhandledException>() {
-            @Nonnull
-            @Override
-            protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
-                return new SystemUnhandledException(message);
-            }
+        return new SystemUnhandledExceptionBuilder();
+    }
 
-            @Nonnull
-            @Override
-            protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
-                return new SystemUnhandledException(message, cause);
-            }
-        };
+    private static class SystemUnhandledExceptionBuilder extends AbstractFluentExceptionSupport<SystemUnhandledException> {
+        
+        public SystemUnhandledExceptionBuilder() {
+            super(DEFAULT_MESSAGE);
+        }
+        
+        @Nonnull
+        @Override
+        protected SystemUnhandledException createExceptionWith(@Nonnull String message) {
+            return new SystemUnhandledException(message);
+        }
+
+        @Nonnull
+        @Override
+        protected SystemUnhandledException createExceptionWith(@Nonnull String message, @Nonnull Throwable cause) {
+            return new SystemUnhandledException(message, cause);
+        }
     }
 }
