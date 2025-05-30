@@ -41,7 +41,7 @@ public class JwtTokenFactory {
             ResponseBody responseBody = Objects.requireNonNull(response.body(), "responseBody should not be null");
             String responseAsString = new String(responseBody.bytes());
 
-            SystemUnhandledException.fluent()
+            SystemUnhandledException.asRootCause()
                     .message(
                             "Failed to obtain access token from Authorization Server. "
                                     + "The Authorization Server returned [status_code=%s, response=%s].",

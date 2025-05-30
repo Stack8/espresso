@@ -16,14 +16,27 @@ public class SystemUnhandledException extends RuntimeException {
         super(message, cause);
     }
 
-    public static AbstractFluentExceptionSupport<SystemUnhandledException> fluent() {
-        return new SystemUnhandledException.Fluent();
+    // Creates a new exception builder that will wrap the given cause.
+    public static ExceptionDetailsStage<SystemUnhandledException> withCause(Throwable cause) {
+        return AbstractFluentExceptionSupport.withCause(cause, SystemUnhandledExceptionBuilder::new);
     }
 
-    private static class Fluent extends AbstractFluentExceptionSupport<SystemUnhandledException> {
+    // Creates a new exception builder that will be a root cause (no wrapped exception).
+    public static ExceptionDetailsStage<SystemUnhandledException> asRootCause() {
+        return AbstractFluentExceptionSupport.asRootCause(SystemUnhandledExceptionBuilder::new);
+    }
 
-        private Fluent() {
-            message(DEFAULT_MESSAGE);
+    // @deprecated Use withCause(Throwable) or asRootCause() instead
+    @Deprecated
+    public static AbstractFluentExceptionSupport<SystemUnhandledException> fluent() {
+        return new SystemUnhandledExceptionBuilder();
+    }
+
+    private static class SystemUnhandledExceptionBuilder
+            extends AbstractFluentExceptionSupport<SystemUnhandledException> {
+
+        public SystemUnhandledExceptionBuilder() {
+            super(DEFAULT_MESSAGE);
         }
 
         @Nonnull

@@ -57,12 +57,11 @@ public class OnePasswordConnector {
         try {
             properties.load(in);
         } catch (IOException e) {
-            throw SystemUnhandledException.fluent()
+            throw SystemUnhandledException.withCause(e)
                     .message(
                             "Something went wrong while trying to load secure note as properties using "
                                     + "[vaultId=%s, itemId=%s].",
                             vaultId, itemId)
-                    .cause(e)
                     .exception();
         }
         return properties;

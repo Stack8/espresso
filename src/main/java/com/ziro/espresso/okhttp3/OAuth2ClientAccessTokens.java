@@ -23,11 +23,10 @@ public class OAuth2ClientAccessTokens {
                             oauth2ClientAccessTokenRequestParams.clientSecret(),
                             oauth2ClientAccessTokenRequestParams.tokenUrl()));
         } catch (ExecutionException e) {
-            throw SystemUnhandledException.fluent()
+            throw SystemUnhandledException.withCause(e.getCause())
                     .message(
                             "Something went wrong while trying to get access token for [%s].",
                             oauth2ClientAccessTokenRequestParams)
-                    .cause(e.getCause())
                     .exception();
         }
     }
