@@ -18,14 +18,12 @@ public class SystemUnhandledException extends RuntimeException {
 
     // Creates a new exception builder that will wrap the given cause.
     public static ExceptionDetailsStage<SystemUnhandledException> withCause(Throwable cause) {
-        SystemUnhandledExceptionBuilder builder = new SystemUnhandledExceptionBuilder();
-        builder.setCause(cause);
-        return builder;
+        return AbstractFluentExceptionSupport.withCause(cause, SystemUnhandledExceptionBuilder::new);
     }
 
     // Creates a new exception builder that will be a root cause (no wrapped exception).
     public static ExceptionDetailsStage<SystemUnhandledException> asRootCause() {
-        return new SystemUnhandledExceptionBuilder();
+        return AbstractFluentExceptionSupport.asRootCause(SystemUnhandledExceptionBuilder::new);
     }
 
     // @deprecated Use withCause(Throwable) or asRootCause() instead
@@ -34,13 +32,12 @@ public class SystemUnhandledException extends RuntimeException {
         return new SystemUnhandledExceptionBuilder();
     }
 
-    private static class SystemUnhandledExceptionBuilder
-            extends AbstractFluentExceptionSupport<SystemUnhandledException> {
-
+    private static class SystemUnhandledExceptionBuilder extends AbstractFluentExceptionSupport<SystemUnhandledException> {
+        
         public SystemUnhandledExceptionBuilder() {
             super(DEFAULT_MESSAGE);
         }
-
+        
         @Nonnull
         @Override
         protected SystemUnhandledException createExceptionWith(@Nonnull String message) {

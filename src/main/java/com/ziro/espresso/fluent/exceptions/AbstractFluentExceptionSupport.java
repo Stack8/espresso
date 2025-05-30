@@ -31,6 +31,20 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
         this.defaultMessage = defaultMessage;
     }
 
+    // Generic factory methods - to be used by concrete exception classes
+    protected static <T extends Throwable> ExceptionDetailsStage<T> withCause(
+            Throwable cause, 
+            Supplier<AbstractFluentExceptionSupport<T>> builderFactory) {
+        AbstractFluentExceptionSupport<T> builder = builderFactory.get();
+        builder.setCause(cause);
+        return builder;
+    }
+
+    protected static <T extends Throwable> ExceptionDetailsStage<T> asRootCause(
+            Supplier<AbstractFluentExceptionSupport<T>> builderFactory) {
+        return builderFactory.get();
+    }
+
     protected Optional<String> message() {
         return Optional.ofNullable(message);
     }
