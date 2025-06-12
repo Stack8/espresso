@@ -63,9 +63,8 @@ public class OkHttpClientFactory {
             sslContext.init(null, trustAllCerts, new SecureRandom());
             return sslContext.getSocketFactory();
         } catch (KeyManagementException | NoSuchAlgorithmException e) {
-            throw SystemUnhandledException.fluent()
+            throw SystemUnhandledException.withCause(e)
                     .message("Something went wrong while trying to initialize all-trusting socket factory.")
-                    .cause(e)
                     .exception();
         }
     }

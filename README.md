@@ -8,7 +8,8 @@ Create your feature branch and start working. To test how the changes you are ma
 ./gradlew clean build
 ./gradlew publish
 ```
-This will publish a snapshot of the library to our internal Maven repository with the name `<version>-SNAPSHOT`
+This will publish a snapshot of the library to our internal Maven repository at https://repository.goziro.com/ with 
+the name `<version>-SNAPSHOT`
 
 You can then go to the other project, and change the version that project consumes to match your snapshot.
 
