@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * </p>
  */
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Target({
     ElementType.CONSTRUCTOR,
     ElementType.FIELD,
