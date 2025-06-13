@@ -31,7 +31,7 @@ public @interface DeprecatedInfo {
      * Reference to the story/issue where this element was marked as deprecated.
      * This field is mandatory.
      *
-     * @return the story/issue reference
+     * @return the story/issue reference where the element was deprecated
      */
     String deprecatedIn();
 
