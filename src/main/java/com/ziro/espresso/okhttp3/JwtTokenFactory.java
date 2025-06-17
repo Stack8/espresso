@@ -20,8 +20,7 @@ import okhttp3.ResponseBody;
  * from an OAuth 2.0 authorization server.
  *
  * <p>The factory uses OkHttp client for HTTP communication and expects JSON responses
- * from the authorization server. It implements the OAuth 2.0 client credentials grant type
- * as specified in RFC 6749 Section 4.4.
+ * from the authorization server.
  *
  * <p>Example usage:
  * <pre>{@code
@@ -48,12 +47,6 @@ public class JwtTokenFactory {
      *   <li>Validates the response status code
      *   <li>Parses the JSON response to extract the access token
      * </ol>
-     *
-     * <p>The request is made with the following headers:
-     * <ul>
-     *   <li>Content-Type: application/x-www-form-urlencoded
-     *   <li>Accept: application/json
-     * </ul>
      *
      * @param scope The OAuth 2.0 scope(s) being requested. Multiple scopes should be
      *             space-delimited

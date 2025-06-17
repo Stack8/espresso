@@ -138,10 +138,6 @@ public class OkHttpClientFactory {
 
     /**
      * A trust manager implementation that accepts all certificates without validation.
-     *
-     * <p>WARNING: This implementation is intended for development or controlled
-     * environments only. It does not perform any certificate validation and should
-     * not be used in production environments where security is a concern.
      */
     private static class NaiveX509TrustManager implements X509TrustManager {
 

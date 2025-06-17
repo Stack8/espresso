@@ -14,30 +14,6 @@ import java.util.function.Supplier;
  *
  * <p>This class serves as the foundation for implementing custom exceptions with fluent APIs.
  * It provides methods for setting messages, causes, and creating exceptions in a type-safe manner.
- *
- * <p>Example usage with a concrete implementation:
- * <pre>{@code
- * // Creating an exception with a cause
- * throw MyException.withCause(originalException)
- *     .message("Failed to process: %s", id)
- *     .exception();
- *
- * // Creating a root cause exception
- * throw MyException.asRootCause()
- *     .message("Invalid configuration")
- *     .exception();
- * }</pre>
- *
- * <p>To implement a custom exception using this class:
- * <ol>
- *   <li>Create a concrete exception class
- *   <li>Create a builder class extending this class
- *   <li>Implement the required {@code createExceptionWith} methods
- *   <li>Provide static factory methods using {@code withCause} and {@code asRootCause}
- * </ol>
- *
- * @param <T> the type of exception this builder creates
- * @see ExceptionDetailsStage
  */
 @NonNullByDefault
 public abstract class AbstractFluentExceptionSupport<T extends Throwable> implements ExceptionDetailsStage<T> {
