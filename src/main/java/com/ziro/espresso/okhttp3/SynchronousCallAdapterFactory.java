@@ -1,6 +1,6 @@
 package com.ziro.espresso.okhttp3;
 
-import com.ziro.espresso.annotation.NonNullByDefault;
+import com.ziro.espresso.annotations.NonNullByDefault;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;

@@ -1,4 +1,4 @@
-package com.ziro.espresso.annotation;
+package com.ziro.espresso.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,7 +1,7 @@
 package com.ziro.espresso.formatters;
 
 import com.google.common.base.Preconditions;
-import com.ziro.espresso.annotation.NonNullByDefault;
+import com.ziro.espresso.annotations.NonNullByDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
