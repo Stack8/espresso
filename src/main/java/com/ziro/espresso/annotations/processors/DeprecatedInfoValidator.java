@@ -2,7 +2,6 @@ package com.ziro.espresso.annotations.processors;
 
 import com.google.auto.service.AutoService;
 import com.ziro.espresso.annotations.DeprecatedInfo;
-
 import java.util.Set;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -30,6 +29,17 @@ public class DeprecatedInfoValidator extends AbstractProcessor {
                 processingEnv
                         .getMessager()
                         .printMessage(Diagnostic.Kind.ERROR, "removingIn must not be empty", element);
+            }
+
+            if (element.getAnnotationMirrors().stream()
+                    .noneMatch(mirror -> mirror.getAnnotationType().toString().equals("java.lang.Deprecated"))) {
+
+                processingEnv
+                        .getMessager()
+                        .printMessage(
+                                Diagnostic.Kind.ERROR,
+                                "@DeprecatedInfo must be used together with @Deprecated",
+                                element);
             }
         }
 
