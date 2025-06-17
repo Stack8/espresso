@@ -1,2 +1,3 @@
 @NonNullByDefault
-package com.ziro.espresso.javax.annotation.extensions;
+package com.ziro.espresso.annotation;
+

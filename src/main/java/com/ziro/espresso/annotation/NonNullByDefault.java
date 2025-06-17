@@ -1,4 +1,4 @@
-package com.ziro.espresso.javax.annotation.extensions;
+package com.ziro.espresso.annotation;
 
 import jakarta.annotation.Nonnull;
 import java.lang.annotation.Documented;

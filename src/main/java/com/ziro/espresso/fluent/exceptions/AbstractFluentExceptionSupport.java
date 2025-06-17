@@ -2,7 +2,7 @@ package com.ziro.espresso.fluent.exceptions;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
+import com.ziro.espresso.annotation.NonNullByDefault;
 import jakarta.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
