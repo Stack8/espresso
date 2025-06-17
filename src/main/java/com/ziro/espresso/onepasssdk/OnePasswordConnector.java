@@ -58,7 +58,6 @@ public class OnePasswordConnector {
      *                    If null, a naive trust manager will be used
      * @throws IllegalArgumentException if baseUrl or accessToken is null or empty
      */
-
     @Builder
     OnePasswordConnector(String baseUrl, String accessToken, @Nullable X509TrustManager trustManager) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(baseUrl), "baseUrl is required.");

@@ -39,7 +39,6 @@ import java.util.function.Supplier;
  * @param <T> the type of exception this builder creates
  * @see ExceptionDetailsStage
  */
-
 @NonNullByDefault
 public abstract class AbstractFluentExceptionSupport<T extends Throwable> implements ExceptionDetailsStage<T> {
 

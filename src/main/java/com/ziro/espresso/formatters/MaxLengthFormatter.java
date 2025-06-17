@@ -2,8 +2,7 @@ package com.ziro.espresso.formatters;
 
 import com.google.common.base.Preconditions;
 import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * A utility class that formats strings by ensuring they don't exceed a specified maximum length.
@@ -18,10 +17,9 @@ import org.slf4j.LoggerFactory;
  * String result = formatter.format("This is a long text"); // Returns "This is a"
  * }</pre>
  */
+@Slf4j
 @NonNullByDefault
 public class MaxLengthFormatter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MaxLengthFormatter.class);
 
     private final int maxLength;
 
@@ -54,9 +52,9 @@ public class MaxLengthFormatter {
      */
     public String format(String value) {
         if (value.length() > maxLength) {
-            LOGGER.debug("Formatting value [{}]", value);
+            log.debug("Formatting value [{}]", value);
             String truncatedValue = value.substring(0, maxLength).trim();
-            LOGGER.debug("Truncated [{}] to [{}]", value, truncatedValue);
+            log.debug("Truncated [{}] to [{}]", value, truncatedValue);
             return truncatedValue;
         }
         return value;

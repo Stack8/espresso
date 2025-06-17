@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
@@ -42,9 +41,8 @@ import retrofit2.Retrofit;
  * @param <T> The adapted return type
  */
 @NonNullByDefault
+@Slf4j
 public class SynchronousCallAdapterFactory<R, T> extends CallAdapter.Factory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SynchronousCallAdapterFactory.class);
-
     /**
      * Creates a call adapter for the given return type.
      *
@@ -118,7 +116,7 @@ public class SynchronousCallAdapterFactory<R, T> extends CallAdapter.Factory {
                         throw new RuntimeException(e);
                     }
                     String errorMessage = String.format("Unsuccessful status %s: %s", response.code(), errorBody);
-                    LOGGER.debug(errorMessage);
+                    log.debug(errorMessage);
                     // This doesn't throw a specific exception type since the caller can return a Response<FooJson>
                     // type and inspect the response directly if they are interested in the status code.
                     throw new RuntimeException(errorMessage);

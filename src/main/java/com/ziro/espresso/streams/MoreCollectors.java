@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-
 /**
  * Utility class providing specialized collectors for Java Stream API operations
  * that enforce cardinality constraints on stream elements.
@@ -37,7 +36,9 @@ public final class MoreCollectors {
      */
     public static <T> Collector<T, Object, T> exactlyOne(String description) {
         return Collectors.collectingAndThen(Collectors.toList(), list -> {
-            Preconditions.checkState(list.size() == 1, "Expected exactly [1] '%s' match but got [%s].".formatted(description, list.size()));
+            Preconditions.checkState(
+                    list.size() == 1,
+                    "Expected exactly [1] '%s' match but got [%s].".formatted(description, list.size()));
             return list.get(0);
         });
     }
@@ -64,7 +65,8 @@ public final class MoreCollectors {
      */
     public static <T> Collector<T, Object, Optional<T>> atMostOne(String description) {
         return Collectors.collectingAndThen(Collectors.toList(), list -> {
-            Preconditions.checkState(list.size() <= 1, "Expected at most [1] '%s' but got [%s].".formatted(description, list.size()));
+            Preconditions.checkState(
+                    list.size() <= 1, "Expected at most [1] '%s' but got [%s].".formatted(description, list.size()));
             return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
         });
     }
