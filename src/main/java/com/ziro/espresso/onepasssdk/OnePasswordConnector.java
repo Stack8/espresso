@@ -24,12 +24,40 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * A connector for interacting with 1Password Connect Server API.
+ * Provides functionality to securely retrieve and parse items from 1Password vaults.
+ *
+ * <p>This connector manages secure connections to the 1Password Connect Server with configurable
+ * SSL/TLS settings and authentication. It uses default timeout values for connection (3s),
+ * read (30s), and write (30s) operations.
+ *
+ * <p>Example usage:
+ * <pre>{@code
+ * OnePasswordConnector connector = OnePasswordConnector.builder()
+ *     .baseUrl("https://connect.example.com")
+ *     .accessToken("your-access-token")
+ *     .build();
+ *
+ * Properties props = connector.getSecureNoteAsProperties("vault-id", "item-id");
+ * }</pre>
+ */
 public class OnePasswordConnector {
 
     private static final Duration DEFAULT_CONNECTION_TIMEOUT = Duration.ofSeconds(3);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(30);
     private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(30);
     private final OnePasswordConnectServerApiClient client;
+
+    /**
+     * Creates a new OnePasswordConnector instance with the specified configuration.
+     *
+     * @param baseUrl The base URL of the 1Password Connect Server
+     * @param accessToken The access token for authentication with the 1Password Connect Server
+     * @param trustManager Optional custom X509TrustManager for SSL/TLS configuration.
+     *                    If null, a naive trust manager will be used
+     * @throws IllegalArgumentException if baseUrl or accessToken is null or empty
+     */
 
     @Builder
     OnePasswordConnector(String baseUrl, String accessToken, @Nullable X509TrustManager trustManager) {
@@ -42,10 +70,22 @@ public class OnePasswordConnector {
     }
 
     /**
-     * Fetch a secure note from 1password that is expected to be in Java properties format.
-     * @param vaultId vault id.
-     * @param itemId item id.
-     * @return the properties in the secure note.
+     * Retrieves a secure note from 1Password and parses it as Java properties.
+     * The secure note must contain content in valid Java properties format.
+     *
+     * <p>The method expects the note to be stored in the 'notesPlain' field of the item.
+     * The content of the note will be parsed according to the Java Properties format
+     * specification.
+     *
+     * @param vaultId The ID of the vault containing the secure note
+     * @param itemId The ID of the item containing the secure note
+     * @return A Properties object containing the parsed content of the secure note
+     * @throws SystemUnhandledException if:
+     *         <ul>
+     *             <li>The item cannot be retrieved from 1Password
+     *             <li>The item does not contain a 'notesPlain' field
+     *             <li>The content cannot be parsed as valid Java properties
+     *         </ul>
      */
     public Properties getSecureNoteAsProperties(String vaultId, String itemId) {
         Item item = client.getItem(vaultId, itemId);
@@ -67,6 +107,14 @@ public class OnePasswordConnector {
         return properties;
     }
 
+    /**
+     * Creates and configures a 1Password Connect Server API client with the specified parameters.
+     *
+     * @param baseUrl The base URL of the 1Password Connect Server
+     * @param accessToken The access token for authentication
+     * @param trustManager The trust manager for SSL/TLS configuration
+     * @return A configured OnePasswordConnectServerApiClient instance
+     */
     private static OnePasswordConnectServerApiClient createClient(
             String baseUrl, String accessToken, X509TrustManager trustManager) {
         Gson gson = new GsonBuilder()
@@ -94,6 +142,13 @@ public class OnePasswordConnector {
         return retrofit.create(OnePasswordConnectServerApiClient.class);
     }
 
+    /**
+     * Adds required HTTP headers to the request for 1Password Connect Server API authentication.
+     *
+     * @param request The original request
+     * @param accessToken The access token to be included in the Authorization header
+     * @return A new request with the required headers
+     */
     private static Request addRequiredHeaders(Request request, String accessToken) {
         return request.newBuilder()
                 .addHeader("Accept", "application/json")
