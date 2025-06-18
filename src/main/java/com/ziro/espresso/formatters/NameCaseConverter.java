@@ -36,6 +36,21 @@ public final class NameCaseConverter {
 
     private NameCaseConverter() {}
 
+    /**
+     * Converts a string to proper name case following various cultural and linguistic conventions.
+     * The method applies multiple formatting rules including:
+     * <ul>
+     *   <li>Initial capitalization of words</li>
+     *   <li>Proper handling of apostrophe-s combinations</li>
+     *   <li>Special treatment for Irish name prefixes</li>
+     *   <li>Correct formatting of patronymic particles (son of)</li>
+     *   <li>Preservation of Roman numerals casing</li>
+     *   <li>Proper handling of Spanish conjunctions</li>
+     * </ul>
+     *
+     * @param input the string to be converted to name case. Can be null or empty.
+     * @return the input string converted to proper name case, or the original input if it's null or empty
+     */
     public static String toNameCase(String input) {
         if (Strings.isNullOrEmpty(input)) {
             return input;

@@ -14,10 +14,53 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+ * Factory class for creating JWT access tokens using OAuth 2.0 client credentials flow.
+ * This class handles the token request and response processing for obtaining access tokens
+ * from an OAuth 2.0 authorization server.
+ *
+ * <p>The factory uses OkHttp client for HTTP communication and expects JSON responses
+ * from the authorization server.
+ *
+ * <p>Example usage:
+ * <pre>{@code
+ * String token = JwtTokenFactory.createAccessToken(
+ *     "read write",
+ *     "client123",
+ *     "secret456",
+ *     "https://auth-server.com/oauth/token"
+ * );
+ * }</pre>
+ */
 public class JwtTokenFactory {
 
     private static final int SUCCESS_STATUS_CODE = 200;
 
+    /**
+     * Creates an access token by making an OAuth 2.0 client credentials grant request
+     * to the specified authorization server.
+     *
+     * <p>The method performs the following steps:
+     * <ol>
+     *   <li>Constructs an OAuth 2.0 token request with client credentials
+     *   <li>Sends the request to the authorization server
+     *   <li>Validates the response status code
+     *   <li>Parses the JSON response to extract the access token
+     * </ol>
+     *
+     * @param scope The OAuth 2.0 scope(s) being requested. Multiple scopes should be
+     *             space-delimited
+     * @param clientId The client identifier issued to the client by the authorization
+     *                server
+     * @param clientSecret The client secret issued to the client by the authorization
+     *                    server
+     * @param tokenUrl The token endpoint URL of the authorization server
+     * @return The JWT access token string
+     * @throws IOException If there is an error in the network communication
+     * @throws SystemUnhandledException If the response status code is not 200 or if
+     *         the response cannot be parsed properly
+     * @throws NullPointerException If the response body is null
+     */
     public static String createAccessToken(String scope, String clientId, String clientSecret, String tokenUrl)
             throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
