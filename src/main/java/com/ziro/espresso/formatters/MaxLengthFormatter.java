@@ -1,7 +1,7 @@
 package com.ziro.espresso.formatters;
 
 import com.google.common.base.Preconditions;
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
+import com.ziro.espresso.annotations.NonNullByDefault;
 import lombok.extern.slf4j.Slf4j;
 
 /**

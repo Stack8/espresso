@@ -1,4 +1,4 @@
 @NonNullByDefault
 package com.ziro.espresso.formatters;
 
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
+import com.ziro.espresso.annotations.NonNullByDefault;

@@ -6,3 +6,6 @@ build
 
 # Intellij IDEA folder
 .idea
+
+# macOS system files
+.DS_Store

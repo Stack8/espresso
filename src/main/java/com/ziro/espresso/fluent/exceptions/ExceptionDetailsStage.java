@@ -1,6 +1,6 @@
 package com.ziro.espresso.fluent.exceptions;
 
-import com.ziro.espresso.javax.annotation.extensions.NonNullByDefault;
+import com.ziro.espresso.annotations.NonNullByDefault;
 import java.util.function.Supplier;
 
 /**
