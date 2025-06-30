@@ -17,6 +17,9 @@ import java.util.function.Supplier;
  */
 @NonNullByDefault
 public abstract class AbstractFluentExceptionSupport<T extends Throwable> implements ExceptionDetailsStage<T> {
+
+    private static final String FALLBACK_DEFAULT_MESSAGE = "Something went wrong.";
+
     private final String defaultMessage;
 
     @Nullable
@@ -24,6 +27,14 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
 
     @Nullable
     private Throwable cause;
+
+    /**
+     * Creates a new exception builder with a default message of "Something went wrong."
+     */
+    @SuppressWarnings("unused")
+    protected AbstractFluentExceptionSupport() {
+        this.defaultMessage = FALLBACK_DEFAULT_MESSAGE;
+    }
 
     /**
      * Creates a new exception builder with the specified default message.
