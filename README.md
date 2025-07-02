@@ -5,8 +5,7 @@ espresso is a library containing utilities meant to support all other java proje
 ### Development:
 Create your feature branch and start working. To test how the changes you are making will work with another project, run:
 ```
-./gradlew clean build
-./gradlew publish
+./gradlew build && ./gradlew publish
 ```
 This will publish a snapshot of the library to our internal Maven repository at https://repository.goziro.com/ with 
 the name `<version>-SNAPSHOT`

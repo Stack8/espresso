@@ -81,17 +81,6 @@ public class SystemUnhandledException extends RuntimeException {
         return AbstractFluentExceptionSupport.asRootCause(SystemUnhandledExceptionBuilder::new);
     }
 
-    /**
-     * @deprecated Use {@link #withCause(Throwable)} or {@link #asRootCause()} instead
-     * for more explicit exception creation.
-     *
-     * @return a fluent exception support instance for building the exception
-     */
-    @Deprecated
-    public static AbstractFluentExceptionSupport<SystemUnhandledException> fluent() {
-        return new SystemUnhandledExceptionBuilder();
-    }
-
     private static class SystemUnhandledExceptionBuilder
             extends AbstractFluentExceptionSupport<SystemUnhandledException> {
 

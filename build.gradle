@@ -10,7 +10,7 @@ allprojects {
         mavenCentral()
     }
     // Don't cache snapshots
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
 }
@@ -91,7 +91,7 @@ publishing {
     }
 }
 
-tasks.withType(PublishToMavenRepository) {
+tasks.withType(PublishToMavenRepository).configureEach {
     def predicate = provider {
         version.contains('SNAPSHOT') || System.getenv().getOrDefault('CI_MODE', 'false') == 'true'
     }

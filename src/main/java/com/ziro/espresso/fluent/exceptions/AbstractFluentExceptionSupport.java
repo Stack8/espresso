@@ -31,6 +31,7 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
     /**
      * Creates a new exception builder with a default message of "Something went wrong."
      */
+    @SuppressWarnings("unused")
     protected AbstractFluentExceptionSupport() {
         this.defaultMessage = FALLBACK_DEFAULT_MESSAGE;
     }
@@ -93,34 +94,10 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
     }
 
     /**
-     * Sets the cause for this exception.
-     *
-     * @deprecated Use {@link withCause(Throwable)} to create exceptions with a cause, or {@link #asRootCause()}
-     * for exceptions without a cause. These methods provide a clearer and more structured approach to exception creation.
-     *
-     * <p>Example of preferred usage:
-     * <pre>{@code
-     * // Instead of:
-     * MyException.fluent().cause(e).message("Failed").exception();
-     *
-     * // Use:
-     * MyException.withCause(e).message("Failed").exception();
-     * }</pre>
-     *
-     * @param cause the throwable that caused this exception
-     * @return this builder instance for method chaining
-     */
-    @Deprecated
-    public AbstractFluentExceptionSupport<T> cause(Throwable cause) {
-        this.cause = cause;
-        return this;
-    }
-
-    /**
      * Returns the currently set cause of the exception.
      *
      * <p>The cause is optional and may return an empty Optional if no cause has been set.
-     * This typically occurs when the exception is created using {@link #asRootCause()}.
+     * This typically occurs when the exception is created using {@link AbstractFluentExceptionSupport#asRootCause(Supplier)}.
      *
      * <p>This is a protected method intended for use by subclasses that need to access
      * the cause during exception creation.
@@ -179,7 +156,7 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
 
     /**
      * Creates and returns the exception instance with all configured properties.
-     * If no message was set, uses the default message.
+     * If no message was set, use the default message.
      *
      * @return the configured exception instance
      */
@@ -201,7 +178,7 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
         // Although suppressed should never be null,
         // being null safe here saves us some headaches with unit tests
         // where we've had to mock exceptions for wtv
-        // (there aren't many, but I think it will be less confusing this way).
+        // (there are a few, but I think it will be less confusing this way).
         return suppressed != null && suppressed.length > 0;
     }
 
