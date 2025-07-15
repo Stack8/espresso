@@ -94,17 +94,6 @@ public class OkHttpClientFactory {
     /**
      * Creates a trust manager that accepts all certificates.
      *
-     * @deprecated Use {@link #createNaiveX509TrustManager()} instead
-     * @return an X509TrustManager that accepts all certificates
-     */
-    @Deprecated
-    public static X509TrustManager buildX509TrustManager() {
-        return new NaiveX509TrustManager();
-    }
-
-    /**
-     * Creates a trust manager that accepts all certificates.
-     *
      * <p>WARNING: This trust manager is intended for development or controlled
      * environments only. It does not perform any certificate validation.
      *
