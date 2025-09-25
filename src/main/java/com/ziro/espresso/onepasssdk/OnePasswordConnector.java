@@ -1,9 +1,10 @@
 package com.ziro.espresso.onepasssdk;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ziro.espresso.fluent.exceptions.SystemUnhandledException;
 import com.ziro.espresso.okhttp3.OkHttpClientFactory;
 import com.ziro.espresso.okhttp3.SynchronousCallAdapterFactory;
@@ -11,6 +12,7 @@ import com.ziro.espresso.streams.MoreCollectors;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Properties;
@@ -22,7 +24,7 @@ import lombok.Builder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * A connector for interacting with 1Password Connect Server API.
@@ -116,14 +118,15 @@ public class OnePasswordConnector {
      */
     private static OnePasswordConnectServerApiClient createClient(
             String baseUrl, String accessToken, X509TrustManager trustManager) {
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-                .setPrettyPrinting()
-                .create();
+
+        ObjectMapper objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
 
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(new SynchronousCallAdapterFactory<>());
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();

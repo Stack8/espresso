@@ -1,8 +1,7 @@
 package com.ziro.espresso.okhttp3;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ziro.espresso.fluent.exceptions.SystemUnhandledException;
 import java.io.IOException;
 import java.util.Objects;
@@ -34,6 +33,7 @@ import okhttp3.ResponseBody;
  */
 public class JwtTokenFactory {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final int SUCCESS_STATUS_CODE = 200;
 
     /**
@@ -91,10 +91,8 @@ public class JwtTokenFactory {
                             response.code(), responseAsString)
                     .throwIf(response.code() != SUCCESS_STATUS_CODE);
 
-            JsonParser jsonParser = new JsonParser();
-            JsonElement jwtJsonElement = jsonParser.parse(responseAsString);
-            JsonObject jwtJsonObject = jwtJsonElement.getAsJsonObject();
-            return jwtJsonObject.get("access_token").getAsString();
+            JsonNode jwtJsonObject = OBJECT_MAPPER.readTree(responseAsString);
+            return jwtJsonObject.get("access_token").asText();
         }
     }
 }
