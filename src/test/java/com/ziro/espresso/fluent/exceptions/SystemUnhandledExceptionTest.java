@@ -1,7 +1,6 @@
 package com.ziro.espresso.fluent.exceptions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,20 +26,6 @@ class SystemUnhandledExceptionTest {
 
         assertThat(exception.getMessage()).isEqualTo("Something went wrong");
         assertThat(exception.getCause()).isNull();
-    }
-
-    @Test
-    void whenUsingWithCauseAndThrowIfThenThrowsExceptionWhenConditionTrue() {
-        RuntimeException originalCause = new RuntimeException("Original error");
-
-        assertThatThrownBy(() -> {
-                    SystemUnhandledException.withCause(originalCause)
-                            .message("Something went wrong")
-                            .throwIf(true);
-                })
-                .isInstanceOf(SystemUnhandledException.class)
-                .hasMessage("Something went wrong")
-                .hasCause(originalCause);
     }
 
     @Test

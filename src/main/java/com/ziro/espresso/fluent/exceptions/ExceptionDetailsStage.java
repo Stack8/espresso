@@ -16,6 +16,4 @@ public interface ExceptionDetailsStage<T extends Throwable> {
     ExceptionDetailsStage<T> message(Supplier<String> messageSupplier);
 
     T exception();
-
-    void throwIf(boolean condition) throws T;
 }

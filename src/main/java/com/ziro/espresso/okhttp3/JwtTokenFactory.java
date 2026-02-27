@@ -84,12 +84,14 @@ public class JwtTokenFactory {
             ResponseBody responseBody = Objects.requireNonNull(response.body(), "responseBody should not be null");
             String responseAsString = new String(responseBody.bytes());
 
-            SystemUnhandledException.asRootCause()
-                    .message(
-                            "Failed to obtain access token from Authorization Server. "
-                                    + "The Authorization Server returned [status_code=%s, response=%s].",
-                            response.code(), responseAsString)
-                    .throwIf(response.code() != SUCCESS_STATUS_CODE);
+            if (response.code() != SUCCESS_STATUS_CODE) {
+                throw SystemUnhandledException.asRootCause()
+                        .message(
+                                "Failed to obtain access token from Authorization Server. "
+                                        + "The Authorization Server returned [status_code=%s, response=%s].",
+                                response.code(), responseAsString)
+                        .exception();
+            }
 
             JsonNode jwtJsonObject = OBJECT_MAPPER.readTree(responseAsString);
             return jwtJsonObject.get("access_token").asText();
