@@ -141,20 +141,6 @@ public abstract class AbstractFluentExceptionSupport<T extends Throwable> implem
     }
 
     /**
-     * Throws the configured exception if the specified condition is true.
-     * This is a convenience method for conditional exception throwing.
-     *
-     * @param condition the condition to evaluate
-     * @throws T the configured exception if the condition is true
-     */
-    @Override
-    public void throwIf(boolean condition) throws T {
-        if (condition) {
-            throw exception();
-        }
-    }
-
-    /**
      * Creates and returns the exception instance with all configured properties.
      * If no message was set, use the default message.
      *
