@@ -72,9 +72,7 @@ def resolveProjectVersion() {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifact("build/libs/espresso-${version}.jar") {
-                extension 'jar'
-            }
+            from components.java
         }
     }
 
