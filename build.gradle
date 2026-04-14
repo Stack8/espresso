@@ -27,8 +27,8 @@ spotless {
 }
 
 java {
-    withJavadocJar()
     withSourcesJar()
+    withJavadocJar()
 
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
