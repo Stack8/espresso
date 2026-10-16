@@ -9,3 +9,5 @@ build
 
 # macOS system files
 .DS_Store
+
+logs/ziro-cli
